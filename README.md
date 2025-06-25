@@ -35,81 +35,30 @@
 </p>
 </div>
 
-This project presents *ContentV*, an efficient framework for accelerating the training of DiT-based video generation models through three key innovations:
+ContentV Video GeneratorThis repository hosts a Gradio web application for generating high-quality videos from text prompts using the ByteDance/ContentV-8B model. It provides a user-friendly interface to control various aspects of video generation, including prompts, frame count, and random seed.FeaturesText-to-Video Generation: Create videos from detailed text descriptions.Customizable Prompts: Input positive and negative prompts to guide video content.Adjustable Frame Count: Control the length of the generated video.Reproducible Results: Specify a random seed to get consistent outputs.Intuitive Gradio UI: Easy-to-use web interface.Live Progress Bar: Monitor the video generation and encoding process directly in the UI.Teal Theme: A custom aesthetic for the Gradio interface.Hardware RequirementsTo run this application locally, a high-performance GPU with substantial VRAM is essential. We strongly recommend the following specifications for optimal performance:GPU: NVIDIA GeForce RTX 5090 or equivalent.VRAM: A minimum of 32 GB of VRAM.Please note: If your system does not meet these specifications, you may encounter out-of-memory errors, extremely slow processing times, or be unable to run the model at all. Ensure your GPU drivers are up to date.Installation and Running the Gradio AppFollow these steps to set up and run the ContentV Video Generator Gradio application on your local machine.PrerequisitesBefore you begin, ensure you have the following installed:Python 3.11 (or a compatible version). You can download it from python.org or use a tool like Anaconda/Miniconda.Git (for cloning the repository).Step 1: Clone the RepositoryFirst, clone this GitHub repository to your local machine:git clone https://github.com/jjmlovesgit/contentv.git
+cd contentv # Replace YourRepoName with the actual name of your repository folder
 
-- A minimalist architecture that maximizes reuse of pre-trained image generation models for video synthesis
-- A systematic multi-stage training strategy leveraging flow matching for enhanced efficiency
-- A cost-effective reinforcement learning with human feedback framework that improves generation quality without requiring additional human annotations
+(Remember to replace YourUsername/YourRepoName.git with the actual path to your repository on GitHub.)Step 2: Set Up Python EnvironmentIt's highly recommended to use a virtual environment to manage dependencies and avoid conflicts with other Python projects.Using Conda (Recommended):conda create -n contentv_env python=3.11 # Create a new conda environment named 'contentv_env'
+conda activate contentv_env             # Activate the environment
 
-Our open-source 8B model (based on Stable Diffusion 3.5 Large and Wan-VAE) achieves state-of-the-art result (85.14 on VBench) in only 4 weeks of training with 256×64GB NPUs.
+Using venv (Standard Python Virtual Environment):python -m venv contentv_env           # Create a new virtual environment
+.\contentv_env\Scripts\activate       # On Windows
+source contentv_env/bin/activate      # On macOS/Linux
 
-<div align="center">
-    <img src="./assets/demo.jpg" width="100%">
-    <img src="./assets/arch.jpg" width="100%">
-</div>
+Step 3: Install DependenciesWith your virtual environment activated, install all the required Python packages using the requirements.txt file. This file contains exact versions for reproducibility.pip install -r requirements.txt
 
-## ⚡ Quickstart
+This command will install all the necessary libraries, including torch (with CUDA support for your NVIDIA GPU), diffusers, gradio, and others your application depends on.Step 4: Run the Gradio ApplicationOnce all dependencies are installed, you can start the Gradio web application:python contentv_gradio.py
 
-#### Recommended PyTorch Version
+Step 5: Access the App in Your BrowserAfter running the command, you will see output in your terminal similar to this:Models loaded successfully!
+* Running on local URL:  http://127.0.0.1:7860
+* To create a public link, set `share=True` in `launch()`.
 
-- GPU: torch >= 2.3.1 (CUDA >= 12.2)
+Open your web browser and navigate to the http://127.0.0.1:7860 (or whatever local URL is displayed) to access the ContentV Video Generator UI.How to Use the AppOnce the Gradio app is loaded in your browser:Prompt: Enter a detailed description of the video you want to generate.Negative Prompt: Enter concepts you want the video to avoid.Number of Frames: Adjust the slider to control the length of the output video.Seed: Input an integer value to ensure reproducible video generations. Using the same seed with the same prompts will yield the same video.Submit: Click the "Submit" button to start the video generation process.Understanding the Progress BarThe application provides real-time feedback through a dynamic progress bar:Frame Generation Phase: The bar will fill from 0% to 100%, indicating the progress of the core video frame generation (diffusion) process. The message will show Generating frames... (Step X/50).Transition: Upon completion of frame generation, the bar will instantly display 100% with the message Frames generated successfully! Starting video encoding....Video Encoding Phase: The same progress bar will then switch to an indeterminate spinner and display the message Encoding video... This may take a few minutes.. This phase involves compressing the raw frames into an .mp4 file and saving it to disk. This can be a CPU-intensive process and may take several minutes depending on your hardware.Completion: Once encoding is complete, the progress indicator will disappear, and the generated video will be displayed in the "Generated Video" output area and automatically saved as generated_video.mp4 in your project directory.Project Structurecontentv_gradio.py: The main script that sets up and runs the Gradio web interface.contentv_pipeline.py: (Assumed) Your custom ContentV diffusion pipeline logic.contentv_transformer.py: (Assumed) Contains the SD3Transformer3DModel definition.requirements.txt: Lists all Python package dependencies and their exact versions.assets/: (Optional) Directory for images or other static assets.__init__.py, .gitignore, LICENSE.txt, Notice, README.md, demo.py: Standard repository files.Special Considerations for NPU Users (Optional)If you are using an Ascend NPU for acceleration, ensure your environment is configured correctly. The script includes conditional imports for torch_npu based on the USE_ASCEND_NPU environment variable. You might need to set this before running:# Example for Windows (in Command Prompt)
+set USE_ASCEND_NPU=1
+python contentv_gradio.py
 
-#### Installation
+# Example for Linux/macOS (in Terminal)
+export USE_ASCEND_NPU=1
+python contentv_gradio.py
 
-```bash
-git clone https://github.com/bytedance/ContentV.git
-cd ContentV
-pip3 install -r requirements.txt
-```
-
-#### T2V Generation
-
-```bash
-## For GPU
-python3 demo.py
-```
-
-## 📊 VBench
-
-| Model | Total Score | Quality Score | Semantic Score | Human Action | Scene | Dynamic Degree | Multiple Objects  | Appear. Style |
-|----------------------|--------|-------|-------|-------|-------|-------|-------|-------|
-| Wan2.1-14B           | 86.22  | 86.67 | 84.44 | 99.20 | 61.24 | 94.26 | 86.59 | 21.59 |
-| **ContentV (Long)**  | 85.14  | 86.64 | 79.12 | 96.80 | 57.38 | 83.05 | 71.41 | 23.02 |
-| Goku†                | 84.85  | 85.60 | 81.87 | 97.60 | 57.08 | 76.11 | 79.48 | 23.08 |
-| Open-Sora 2.0        | 84.34  | 85.40 | 80.12 | 95.40 | 52.71 | 71.39 | 77.72 | 22.98 |
-| Sora†                | 84.28  | 85.51 | 79.35 | 98.20 | 56.95 | 79.91 | 70.85 | 24.76 |
-| **ContentV (Short)** | 84.11  | 86.23 | 75.61 | 89.60 | 44.02 | 79.26 | 74.58 | 21.21 |
-| EasyAnimate 5.1      | 83.42  | 85.03 | 77.01 | 95.60 | 54.31 | 57.15 | 66.85 | 23.06 |
-| Kling 1.6†           | 83.40  | 85.00 | 76.99 | 96.20 | 55.57 | 62.22 | 63.99 | 20.75 |
-| HunyuanVideo         | 83.24  | 85.09 | 75.82 | 94.40 | 53.88 | 70.83 | 68.55 | 19.80 |
-| CogVideoX-5B         | 81.61  | 82.75 | 77.04 | 99.40 | 53.20 | 70.97 | 62.11 | 24.91 |
-| Pika-1.0†            | 80.69  | 82.92 | 71.77 | 86.20 | 49.83 | 47.50 | 43.08 | 22.26 |
-| VideoCrafter-2.0     | 80.44  | 82.20 | 73.42 | 95.00 | 55.29 | 42.50 | 40.66 | 25.13 |
-| AnimateDiff-V2       | 80.27  | 82.90 | 69.75 | 92.60 | 50.19 | 40.83 | 36.88 | 22.42 |
-| OpenSora 1.2         | 79.23  | 80.71 | 73.30 | 85.80 | 42.47 | 47.22 | 58.41 | 23.89 |
-
-## ✅ Todo List
-- [x] Inference code and checkpoints
-- [ ] Training code of RLHF
-
-## 🧾 License
-This code repository and part of the model weights are licensed under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0). Please note that:
-- MM DiT are derived from [Stable Diffusion 3.5 Large](https://huggingface.co/stabilityai/stable-diffusion-3.5-large) and trained with video samples. This Stability AI Model is licensed under the [Stability AI Community License](https://stability.ai/community-license-agreement), Copyright ©  Stability AI Ltd. All Rights Reserved
-- Video VAE from [Wan2.1](https://huggingface.co/Wan-AI/Wan2.1-T2V-14B) is licensed under [Apache 2.0 License](https://huggingface.co/Wan-AI/Wan2.1-T2V-14B/blob/main/LICENSE.txt)
-
-## ❤️ Acknowledgement
-* [Stable Diffusion 3.5 Large](https://huggingface.co/stabilityai/stable-diffusion-3.5-large)
-* [Wan2.1](https://github.com/Wan-Video/Wan2.1)
-* [Diffusers](https://github.com/huggingface/diffusers)
-* [HuggingFace](https://huggingface.co)
-
-## 🔗 Citation
-
-```bibtex
-@article{contentv2025,
-  title     = {ContentV: Efficient Training of Video Generation Models with Limited Compute},
-  author    = {Bytedance Douyin Content Team},
-  journal   = {arXiv preprint arXiv:2506.05343},
-  year      = {2025}
-  }
-```
+(Please note that torch_npu and transfer_to_npu require specific NPU drivers and installations beyond standard Python packages.)License[TODO: Add your project's license here, e.g., MIT, Apache 2.0, etc.]
