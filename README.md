@@ -202,5 +202,4 @@ python contentv_gradio.py
 (Please note that `torch_npu` and `transfer_to_npu` require specific NPU drivers and installations beyond standard Python packages.)
 
 ## License
-
-\[TODO: Add your project's license here, e.g., MIT, Apache 2.0, etc.\]
+Apache 2.0
