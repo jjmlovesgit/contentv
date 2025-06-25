@@ -85,7 +85,7 @@ Before you begin, ensure you have the following installed:
 First, clone this GitHub repository to your local machine:
 
 ```
-git clone [https://github.com/jjmlovesgit/contentv.git](https://github.com/jjmlovesgit/contentv.git)
+git clone https://github.com/jjmlovesgit/contentv.git
 cd contentv
 
 ```
