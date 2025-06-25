@@ -204,4 +204,4 @@ python contentv_gradio.py
 ## License
 Apache 2.0
 ___________________________________________________________________________________________
-Example: https://github.com/jjmlovesgit/contentv/blob/main/generated_video.mp4
+[Example: https://github.com/jjmlovesgit/contentv/blob/main/generated_video.mp4](https://github.com/jjmlovesgit/contentv/blob/main/generated_video.mp4)
