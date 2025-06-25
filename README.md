@@ -36,7 +36,6 @@
 </div>
 # ContentV Video Generator
 ![image](https://github.com/user-attachments/assets/2db37536-057f-4dd3-8709-67ec0284e416)
-![image](https://github.com/user-attachments/assets/2db37536-057f-4dd3-8709-67ec0284e416)
 
 ![image](https://github.com/user-attachments/assets/45d8a84d-4aaf-4c9f-82e7-9da8583dc10d)
 
