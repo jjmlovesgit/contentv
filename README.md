@@ -1,4 +1,4 @@
-# ContentV: Efficient Training of Video Generation Models with Limited Compute
+# ContentV: Text to Video Running Locally
 
 <div align="center">
 <p align="center">
